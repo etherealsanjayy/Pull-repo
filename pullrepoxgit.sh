@@ -27,4 +27,4 @@ else
     echo "Error: Download fail check token, owner, or check repo name"
 fi
 
-# before run this script run this command "sed -i 's/\r$//' (fileanme)"
+# before run this script run this command "sed -i 's/\r$//' fileanme"
