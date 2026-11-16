@@ -22,4 +22,4 @@ else
     echo "Error: Clone fail check username, token, or check repo name"
 fi
 
-# before run this script run this command "sed -i 's/\r$//' (fileanme)"
+# before run this script run this command "sed -i 's/\r$//' fileanme"
