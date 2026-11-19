@@ -5,5 +5,5 @@ wget https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/bshnogit.s
 
 Windows-
 
-iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwgit.ps" -OutFile "Downloads\pwgit.ps"
-iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwnogit.ps" -OutFile "Downloads\pwnogit.ps"
+iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwgit.ps" -OutFile "Downloads\pwgit.ps1"
+iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwnogit.ps" -OutFile "Downloads\pwnogit.ps1"
