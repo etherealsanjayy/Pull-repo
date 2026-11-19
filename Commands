@@ -1,0 +1,9 @@
+Linux!!
+
+wget https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/bshgit.sh
+wget https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/bshnogit.sh
+
+Windows-
+
+iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwgit.ps" -OutFile "Downloads\pwgit.ps"
+iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwnogit.ps" -OutFile "Downloads\pwnogit.ps"
