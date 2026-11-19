@@ -1,0 +1,22 @@
+# Download and extract private repo without Git
+$User = Read-Host "GitHub Username"
+$SecureToken = Read-Host -AsSecureString "GitHub Token (PAT)"
+$Token = (New-Object PSCredential("u", $SecureToken)).GetNetworkCredential().Password
+
+$Owner = Read-Host "Repo Owner (Enter for same)"
+if (-not $Owner) { $Owner = $User }
+$Repo = Read-Host "Repo Name"
+
+$Url = "https://api.github.com/repos/$Owner/$Repo/zipball/main"
+$Zip = ".\$Repo.zip"
+$Dest = ".\$Repo"
+
+Write-Host "Downloading..." -ForegroundColor Cyan
+try {
+    Invoke-RestMethod -Uri $Url -Headers @{ Authorization = "Bearer $Token" } -OutFile $Zip
+    Expand-Archive -Path $Zip -DestinationPath $Dest -Force
+    Remove-Item $Zip -Force
+    Write-Host "Done: Extracted to '$Dest'." -ForegroundColor Green
+} catch {
+    Write-Host "Error: Download failed. Check credentials." -ForegroundColor Red
+}

@@ -1,0 +1,20 @@
+# Clone private repo with Git and strip token from config
+$User = Read-Host "GitHub Username"
+$SecureToken = Read-Host -AsSecureString "GitHub Token (PAT)"
+$Token = (New-Object PSCredential("u", $SecureToken)).GetNetworkCredential().Password
+
+$Owner = Read-Host "Repo Owner (Enter for same)"
+if (-not $Owner) { $Owner = $User }
+$Repo = Read-Host "Repo Name"
+
+Write-Host "Cloning..." -ForegroundColor Cyan
+git clone "https://$User:$Token@github.com/$Owner/$Repo.git"
+
+if ($LASTEXITCODE -eq 0) {
+    Set-Location $Repo
+    # Remove token from saved remote URL
+    git remote set-url origin "https://github.com/$Owner/$Repo.git"
+    Write-Host "Done: Cloned securely." -ForegroundColor Green
+} else {
+    Write-Host "Error: Clone failed. Check credentials." -ForegroundColor Red
+}
