@@ -2,8 +2,11 @@ Linux!!
 
 wget https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/bshgit.sh
 wget https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/bshnogit.sh
+sed -i 's/\r$//' fileanme
+
 
 Windows-
 
 iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwgit.ps" -OutFile "Downloads\pwgit.ps1"
 iwr -Uri "https://raw.githubusercontent.com/etherealsanjayy/Pull-repo/main/pwnogit.ps" -OutFile "Downloads\pwnogit.ps1"
+ # Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
