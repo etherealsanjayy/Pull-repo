@@ -1,30 +1,44 @@
 #!/bin/bash
-# Script: download_no_git.sh
+# Download and extract private repo safely without Git
 
-read -p "Enter Your GitHub Username: " GITHUB_USER
-read -s -p "Enter GitHub Token (PAT): " GITHUB_TOKEN
+read -r -p "GitHub Username: " GITHUB_USER
+read -r -s -p "GitHub Token (PAT): " GITHUB_TOKEN
 echo ""
-read -p "Enter Repo Owner (leave blank if same as your username): " REPO_OWNER
-read -p "Enter Repository Name: " REPO_NAME
+read -r -p "Repo Owner (Enter for same): " REPO_OWNER
+read -r -p "Repo Name: " REPO_NAME
 
 REPO_OWNER=${REPO_OWNER:-$GITHUB_USER}
+ARCHIVE="_tmp_${REPO_NAME}.tar.gz"
+DEST="$REPO_NAME"
 
-echo "Downloading repository archive..."
+echo "Downloading..."
 
-# curl -f to find error
-if curl -f -L -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/tarball/main" -o "${REPO_NAME}.tar.gz"; then
-    echo "Extracting files..."
-    
-    # New file
-    mkdir -p "$REPO_NAME"
-    tar -xzf "${REPO_NAME}.tar.gz" -C "$REPO_NAME" --strip-components=1
-    
-    # Cleanup: download zip file delete 
-    rm "${REPO_NAME}.tar.gz" 
-    
-    echo "Done! repo securely download '$REPO_NAME'"
+# No branch specified = auto-downloads repo's default branch (main/master/etc.)
+if curl -fL -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/tarball" -o "$ARCHIVE"; then
+    # Ask before overwriting an existing folder
+    if [ -d "$DEST" ]; then
+        read -r -p "Folder '$DEST' already exists. Overwrite? (y/N): " CHOICE
+        if [[ "$CHOICE" == "y" || "$CHOICE" == "Y" ]]; then
+            rm -rf "$DEST"
+        else
+            DEST="${REPO_NAME}_$(date +%Y%m%d_%H%M%S)"
+        fi
+    fi
+
+    echo "Extracting..."
+    mkdir -p "$DEST"
+
+    # --strip-components=1 removes GitHub's random hash folder automatically
+    if tar -xzf "$ARCHIVE" -C "$DEST" --strip-components=1; then
+        rm -f "$ARCHIVE"
+        echo "Done: Extracted cleanly to '$DEST'."
+    else
+        rm -f "$ARCHIVE"
+        echo "Error: Extraction failed."
+    fi
 else
-    echo "Error: Download fail check token, owner, or check repo name"
+    rm -f "$ARCHIVE"
+    echo "Error: Download failed. Check credentials or repo name."
 fi
 
 # before run this script run this command "sed -i 's/\r$//' fileanme"
